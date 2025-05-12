@@ -7,7 +7,6 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 from edx_django_utils.plugins import PluginSettings, PluginURLs
 from openedx.core.djangoapps.plugins.constants import ProjectType, SettingsType
-log = logging.getLogger(__name__)
 
 class TPAEdxPluginConfig(AppConfig):
     """
@@ -34,4 +33,4 @@ class TPAEdxPluginConfig(AppConfig):
 
     def ready(self):
         from .signals import receivers
-        log.debug("{label} is ready.".format(label=self.label))
+        print("{label} is ready.".format(label=self.label))
