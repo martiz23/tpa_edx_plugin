@@ -5,7 +5,9 @@ App configuration for tpa_edx_plugin.
 from __future__ import unicode_literals
 
 from django.apps import AppConfig
-
+from edx_django_utils.plugins import PluginSettings, PluginURLs
+from openedx.core.djangoapps.plugins.constants import ProjectType, SettingsType
+log = logging.getLogger(__name__)
 
 class TPAEdxPluginConfig(AppConfig):
     """
@@ -15,33 +17,21 @@ class TPAEdxPluginConfig(AppConfig):
     verbose_name = 'TPA edX Plugin'
 
     plugin_app = {
-        'url_config': {
-            'lms.djangoapp': {
-                'namespace': 'tpa_edx_plugin',
-                'regex': r'^tpa_edx_plugin/',
-                'relative_path': 'urls',
+      PluginURLs.CONFIG: {
+           ProjectType.LMS: {
+                PluginURLs.NAMESPACE: name,
+                PluginURLs.REGEX: "^tpa-edx-plugin/",
+                PluginURLs.RELATIVE_PATH: "urls",
             },
-            'cms.djangoapp': {
-                'namespace': 'tpa_edx_plugin',
-                'regex': r'^tpa_edx_plugin/',
-                'relative_path': 'urls',
-            }
         },
-        'settings_config': {
-            'lms.djangoapp': {
-                'common': {'relative_path': 'settings.common'},
-                'test': {'relative_path': 'settings.test'},
-                'aws': {'relative_path': 'settings.aws'},
-                'production': {'relative_path': 'settings.production'},
-            },
-            'cms.djangoapp': {
-                'common': {'relative_path': 'settings.common'},
-                'test': {'relative_path': 'settings.test'},
-                'aws': {'relative_path': 'settings.aws'},
-                'production': {'relative_path': 'settings.production'},
+       PluginSettings.CONFIG: {
+            ProjectType.LMS: {
+                SettingsType.COMMON: {PluginSettings.RELATIVE_PATH: "settings.common"},
+                SettingsType.PRODUCTION: {PluginSettings.RELATIVE_PATH: "settings.production"},                
             },
         }
     }
 
     def ready(self):
         from .signals import receivers
+        log.debug("{label} is ready.".format(label=self.label))

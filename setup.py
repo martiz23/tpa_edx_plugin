@@ -7,7 +7,7 @@ from __future__ import print_function
 import os
 import re
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def load_requirements(*requirements_paths):
@@ -84,9 +84,11 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.8',
     ],
-    packages=[
-        'tpa_edx_plugin',
-    ],
+    # packages=[
+    #     'tpa_edx_plugin',
+    # ],
+    packages=find_packages(),
+    package_data={"": ["*.html"]},  # include any Mako templates found in this repo.
     include_package_data=True,
     install_requires=load_requirements('requirements/base.in'),
     zip_safe=False,
